@@ -37,7 +37,9 @@ var products = [{
 var html = '';
 var os_array= new Set();
 var brand_array= new Set();
-var prod_to_display = [];
+var displayOS = [];
+var displayBrand = [];
+
 
 $(document).ready(function(){
     for (var i = 0; i<products.length; i++){
@@ -55,7 +57,7 @@ $(document).ready(function(){
 
     });
     // Dropdown for OS
-    osDropdown = '<label for="os">Filter by OS:</label>\
+    var osDropdown = '<label for="os">Filter by OS:</label>\
                     <select name="os" id="os">\
                     <option value = "none" id = "none">None</option>';
 
@@ -67,7 +69,7 @@ $(document).ready(function(){
     $('table').before(osDropdown);
 
     // Dropdown for Brand
-    brandDropdown = '<label for="brand">Filter by Brand:</label>\
+    var brandDropdown = '<label for="brand">Filter by Brand:</label>\
                     <select name="brand" id="brand">\
                     <option value = "none">None</option>';
 
@@ -80,31 +82,36 @@ $(document).ready(function(){
     // Dropdown End
 
     $('#os').change(function(){
-        prod_to_display = [];
         var filterValOS = $(this).val();
 
         for (var i=0; i<products.length; i++){
             if (products[i].os == filterValOS){
-                prod_to_display.push(products[i]);
+                displayOS.push(products[i]);
             }
             else if (filterValOS == 'none'){
-                prod_to_display = products;
+                displayOS = products;
             }
         }
+        console.log(displayOS);
     });
 
     $('#brand').change(function(){
-        prod_to_display = [];
         var filterValBrand = $(this).val();
 
         for (var i=0; i<products.length; i++){
             if (products[i].brand == filterValBrand){
-                prod_to_display.push(products[i]);
+                displayBrand.push(products[i]);
             }
             else if (filterValBrand == 'none'){
-                prod_to_display = products;
+                displayBrand = products;
             }
         }
+        console.log(displayBrand);
+    });
+
+    $('#bb').click(function(){
+        
+        for (var i=0; i)
     });
 
 });
