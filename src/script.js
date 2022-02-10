@@ -39,7 +39,11 @@ var os_array= new Set();
 var brand_array= new Set();
 var displayOS = [];
 var displayBrand = [];
-
+var prod_to_show = [];
+var osDropdown = '';
+var brandDropdown = '';
+var os_val = 'none1';
+var brand_val = 'none1';
 
 $(document).ready(function(){
     for (var i = 0; i<products.length; i++){
@@ -47,9 +51,8 @@ $(document).ready(function(){
         brand_array.add(products[i].brand)
     }
         
-    display();
+    display(products);
     
-    $('#wrapper').html(html);
 
     $('body').on("click", "#close", function(){
         var row_id = $(this).data("row_id");
@@ -57,21 +60,20 @@ $(document).ready(function(){
 
     });
     // Dropdown for OS
-    var osDropdown = '<label for="os">Filter by OS:</label>\
+    osDropdown = '<label for="os">Filter by OS:</label>\
                     <select name="os" id="os">\
-                    <option value = "none" id = "none">None</option>';
+                    <option value = "none1" id = "none">None</option>';
 
     for (var item of os_array){
         osDropdown += '<option value="'+item+'" id = "'+ item +'">'+ item +'</option>';
     }
 
     osDropdown+= '</select>'
-    $('table').before(osDropdown);
 
     // Dropdown for Brand
-    var brandDropdown = '<label for="brand">Filter by Brand:</label>\
+    brandDropdown = '<label for="brand">Filter by Brand:</label>\
                     <select name="brand" id="brand">\
-                    <option value = "none">None</option>';
+                    <option value = "none1">None</option>';
 
     for (var item of brand_array){
         brandDropdown += '<option value="'+item+'">'+ item +'</option>';
@@ -81,6 +83,9 @@ $(document).ready(function(){
     $('table').before(brandDropdown);
     // Dropdown End
 
+    $('table').before(osDropdown);
+
+
     $('#os').change(function(){
         var filterValOS = $(this).val();
 
@@ -88,11 +93,11 @@ $(document).ready(function(){
             if (products[i].os == filterValOS){
                 displayOS.push(products[i]);
             }
-            else if (filterValOS == 'none'){
+            else if (filterValOS == 'none1'){
                 displayOS = products;
             }
         }
-        console.log(displayOS);
+        display(displayOS, osDropdown, brandDropdown);
     });
 
     $('#brand').change(function(){
@@ -102,22 +107,45 @@ $(document).ready(function(){
             if (products[i].brand == filterValBrand){
                 displayBrand.push(products[i]);
             }
-            else if (filterValBrand == 'none'){
+            else if (filterValBrand == 'none1'){
                 displayBrand = products;
             }
         }
-        console.log(displayBrand);
+        display(displayBrand, osDropdown, brandDropdown);
+        
     });
 
-    $('#bb').click(function(){
-        
-        for (var i=0; i)
-    });
+
+    searchBar = '<input type = "text" id = "search" >';
+
+
+
+
+    $('#wrapper').before(searchBar);
+    $("#search").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$("table tr").filter(function() {
+		  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	  });
+    
+
+    // $('#bb').click(function(){
+    //     for (var i = 0; i<displayBrand.length; i++){
+    //         for (var j = 0 ; j<displayOS.length; j++){
+    //             if (displayBrand[i] == displayOS[j]){
+    //                 prod_to_show.push(displayOS[j]);
+    //             }
+    //         }
+    //     }
+    //     console.log(prod_to_show);
+    //     display(prod_to_show);
+    // });
 
 });
 
 
-function display(){
+function display(resultArray, osDropdown, brandDropdown){
     html = '<table>\
             <tr>\
                 <th>ID</th>\
@@ -127,15 +155,19 @@ function display(){
                 <th>Remove</th>\
             </tr>';
 
-    for (var i=0; i < products.length; i++){
-        html += '<tr id='+products[i].id+'>\
-        <td>'+products[i].id+'</td>\
-        <td>'+products[i].name+'</td>\
-        <td>'+products[i].brand+'</td>\
-        <td>'+products[i].os+'</td>\
-        <td><a href = "#" id = "close" data-row_id='+ products[i].id +' >X</a></td>\
+    for (var i=0; i < resultArray.length; i++){
+        html += '<tr id='+resultArray[i].id+'>\
+        <td>'+resultArray[i].id+'</td>\
+        <td>'+resultArray[i].name+'</td>\
+        <td>'+resultArray[i].brand+'</td>\
+        <td>'+resultArray[i].os+'</td>\
+        <td><a href = "#" id = "close" data-row_id='+ resultArray[i].id +' >X</a></td>\
     </tr>'
     }
     // document.getElementById('table').innerHTML = html;
-    html+='</table>'
+    html+='</table>';
+    $('#wrapper').html(html);
+    $('table').before(osDropdown);
+    $('table').before(brandDropdown);
+
 }
