@@ -46,7 +46,7 @@ $(document).ready(function(){
                 </tr>';
 
     for (var i=0; i < products.length; i++){
-        html += '<tr>\
+        html += '<tr id='+products[i].id+'>\
         <td>'+products[i].id+'</td>\
         <td>'+products[i].name+'</td>\
         <td>'+products[i].brand+'</td>\
@@ -60,9 +60,9 @@ $(document).ready(function(){
 
     $('body').on("click", "#close", function(){
         
-        var p_id = $(this).data("row_id");
-        
+        var row_id = $(this).data("row_id");
+
+        $('#'+row_id).hide();
+
     });
-
-
 });
