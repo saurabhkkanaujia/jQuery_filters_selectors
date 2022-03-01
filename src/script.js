@@ -1,7 +1,7 @@
-
 $(document).ready(function(){
+    $('#wrapper').html('<div id="dd"></div><div id="table_list"></div>');
     display(products);
-
+    displayDropdowns();
     $('#os, #brand').on("change", function(){
         selectedOS = $('#os').find('option:selected').val();
         selectedBrand = $('#brand').find('option:selected').val();
@@ -79,7 +79,7 @@ for (var i = 0; i<products.length; i++){
 //filter function
 function filterProducts(selectedOS, selectedBrand){
     prod_to_show = [];
-    for (i=0; i<products.length; i++){
+    for (var i=0; i<products.length; i++){
         if ((selectedOS == products[i].os) && (selectedBrand == products[i].brand)){
             prod_to_show.push(products[i]);
         }
@@ -92,7 +92,6 @@ function filterProducts(selectedOS, selectedBrand){
         else if (selectedOS == products[i].os && selectedBrand == 'none1'){
             prod_to_show.push(products[i]);
         }
-
     }
     return prod_to_show;
 }
@@ -102,8 +101,6 @@ function filterProducts(selectedOS, selectedBrand){
 //function to render content
 function display(result){
     html = '<div>';
-    html += dropDown();
-    html += '<input type = "text" id = "search" >';
 
     html += '<table>\
     <tr>\
@@ -127,10 +124,16 @@ function display(result){
     
     html+='</table></div>';
 
-    $('#wrapper').html(html);
+    $('#table_list').html(html);
     return 
 }
 
+function displayDropdowns(){
+    html = '';
+    html += dropDown();
+    html += '<input type = "text" id = "search" >';
+    $('#dd').html(html);
+}
 
 //function for DropDown
 function dropDown(){
